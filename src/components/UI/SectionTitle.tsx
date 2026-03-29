@@ -8,7 +8,7 @@ interface SectionTitleProps {
 
 export default function SectionTitle({ children, id }: SectionTitleProps) {
   return (
-    <Box sx={{ mb: 3, mt: { xs: 4, md: 6 } }} id={id}>
+    <Box sx={{ mb: 3, mt: 0}} id={id}>
       <Typography variant="h2" component="h2" color="primary.dark">
         {children}
       </Typography>

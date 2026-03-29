@@ -1,8 +1,8 @@
 export const property = {
-  name: 'Maple Ridge Retreat',
+  name: 'Riversedge Cottage',
   tagline: 'A cozy getaway in the heart of nature',
   description:
-    'Nestled among towering maples and rolling hills, Maple Ridge Retreat offers a peaceful escape from the everyday. This charming two-bedroom cottage features an open-concept living area with exposed beams, a fully equipped kitchen, and a wraparound porch with views of the surrounding forest. Whether you want to hike nearby trails, kayak on the lake, or simply curl up by the wood-burning fireplace, this is the perfect place to unwind.',
+    'Cozy riverfront cottage with private dock, patio, and stunning sunset views over the water. Relax in an Adirondack chair under mature shade trees or head out fishing and kayaking right from the property.',
   amenities: [
     'WiFi',
     'Free Parking',
@@ -10,21 +10,19 @@ export const property = {
     'Fireplace',
     'Air Conditioning',
     'Washer & Dryer',
-    'Pet Friendly',
     'BBQ Grill',
-    'Lake Access',
+    'Water Access',
     'Board Games',
   ],
   address: {
-    street: '142 Lakeshore Road',
-    city: 'Huntsville',
+    street: '1321 Hilly Lane',
+    city: 'North Grenville',
     province: 'Ontario',
-    postal: 'P1H 1M3',
+    postal: 'K0G 1J0',
   },
   contact: {
-    phone: '(705) 555-0192',
-    email: 'stay@mapleridgeretreat.ca',
+    phone: '(613) 371-5872',
+    email: 'netbuy@gmail.com',
   },
-  coordinates: [-79.2169, 45.3271] as [number, number],
   icsUrl: '/calendar.ics',
 }

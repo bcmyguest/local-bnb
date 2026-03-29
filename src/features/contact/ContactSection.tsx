@@ -9,7 +9,7 @@ import { property } from '@/features/property/property.data'
 
 export default function ContactSection() {
   return (
-    <Box>
+    <Box sx={{mt: 1}}>
       <SectionTitle id="contact">Contact</SectionTitle>
       <Paper variant="outlined" sx={{ p: 3, maxWidth: 500 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>

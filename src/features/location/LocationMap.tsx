@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import SectionTitle from '@/components/UI/SectionTitle'
 import { property } from '@/features/property/property.data'
+import { useGeocode } from './useGeocode'
 import 'ol/ol.css'
 import Map from 'ol/Map'
 import View from 'ol/View'
@@ -19,11 +21,12 @@ import { Style, Icon } from 'ol/style'
 export default function LocationMap() {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<Map | null>(null)
+  const { coordinates, loading, error } = useGeocode(property.address)
 
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return
+    if (!mapRef.current || !coordinates || mapInstanceRef.current) return
 
-    const coords = fromLonLat(property.coordinates)
+    const coords = fromLonLat(coordinates)
 
     const pinFeature = new Feature({
       geometry: new Point(coords),
@@ -64,12 +67,12 @@ export default function LocationMap() {
       map.setTarget(undefined)
       mapInstanceRef.current = null
     }
-  }, [])
+  }, [coordinates])
 
   const { street, city, province, postal } = property.address
 
   return (
-    <Box>
+    <Box sx={{mt: 1}}>
       <SectionTitle id="location">Location</SectionTitle>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
         <LocationOnIcon color="primary" />
@@ -77,14 +80,22 @@ export default function LocationMap() {
           {street}, {city}, {province} {postal}
         </Typography>
       </Box>
+      {loading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+          <CircularProgress />
+        </Box>
+      )}
+      {error && (
+        <Typography color="error">Could not load map: {error}</Typography>
+      )}
       <Box
         ref={mapRef}
         sx={{
           width: '100%',
-          height: 400,
+          height: loading || error ? 0 : 400,
           borderRadius: 2,
           overflow: 'hidden',
-          border: 1,
+          border: loading || error ? 0 : 1,
           borderColor: 'divider',
         }}
       />

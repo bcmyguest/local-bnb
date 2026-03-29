@@ -46,7 +46,7 @@ export default function AvailabilityCalendar() {
   const goForward = () => setStartMonth((m) => m.add(1, 'month'))
 
   return (
-    <Box>
+    <Box sx={{mt: 1}}>
       <SectionTitle id="availability">Availability</SectionTitle>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
         Dates shown with a strikethrough are already booked. Contact us to

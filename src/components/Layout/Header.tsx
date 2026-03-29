@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import CabinIcon from '@mui/icons-material/Cabin'
+import { property } from '@/features/property/property.data'
 
 const navLinks = [
   { label: 'Photos', href: '#photos' },
@@ -29,7 +30,7 @@ export default function Header() {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <CabinIcon color="primary" />
           <Typography variant="h6" color="primary.dark" fontWeight={700}>
-            Maple Ridge Retreat
+            {property.name}
           </Typography>
         </Box>
         <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1 }}>

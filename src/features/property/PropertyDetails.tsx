@@ -30,7 +30,7 @@ const amenityIcons: Record<string, React.ReactElement> = {
 
 export default function PropertyDetails() {
   return (
-    <Box>
+    <Box sx={{mt: 1}}>
       <SectionTitle id="about">About</SectionTitle>
       <Typography variant="h4" gutterBottom color="text.primary">
         {property.tagline}
