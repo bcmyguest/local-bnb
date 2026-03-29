@@ -26,7 +26,7 @@ export default function ImageGallery() {
   return (
     <Box>
       <SectionTitle id="photos">Photos</SectionTitle>
-      <Box sx={{ display: 'flex', mt:0, gap: 2, height: { xs: 400, md: 500 }, flexDirection: { xs: 'column', md: 'row' } }}>
+      <Box sx={{ display: 'flex', mt:0, gap: 2, height: { xs: 500, md: 600 }, flexDirection: { xs: 'column', md: 'row' } }}>
         <Box sx={{ position: 'relative', flex: 2, overflow: 'hidden', borderRadius: 2 }}>
           <Box
             component="img"
@@ -86,6 +86,7 @@ export default function ImageGallery() {
               sx={{
                 width: '100%',
                 flex: 1,
+
                 minHeight: 0,
                 objectFit: 'cover',
                 borderRadius: 1,
