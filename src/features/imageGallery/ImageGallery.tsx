@@ -26,8 +26,16 @@ export default function ImageGallery() {
   return (
     <Box>
       <SectionTitle id="photos">Photos</SectionTitle>
-      <Box sx={{ display: 'flex', mt:0, gap: 2, height: { xs: 500, md: 600 }, flexDirection: { xs: 'column', md: 'row' } }}>
-        <Box sx={{ position: 'relative', flex: 2, overflow: 'hidden', borderRadius: 2 }}>
+      <Box
+        sx={{
+          display: { xs: 'block', md: 'grid' },
+          gridTemplateColumns: { md: '3fr 1fr' },
+          gridTemplateRows: { md: 'repeat(3, 1fr)' },
+          gap: 1,
+          height: { xs: 500, md: 750 },
+        }}
+      >
+        <Box sx={{ position: 'relative', gridRow: { md: '1 / -1' }, overflow: 'hidden', borderRadius: 2, height: { xs: '100%' } }}>
           <Box
             component="img"
             src={photos[currentIndex].src}
@@ -68,36 +76,26 @@ export default function ImageGallery() {
             <ChevronRightIcon />
           </IconButton>
         </Box>
-        <Box
-          sx={{
-            flex: 1,
-            display: { xs: 'none', md: 'flex' },
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          {thumbnailIndices.map((i) => (
-            <Box
-              key={i}
-              component="img"
-              src={photos[i].src}
-              alt={photos[i].alt}
-              onClick={() => setCurrentIndex(i)}
-              sx={{
-                width: '100%',
-                flex: 1,
-
-                minHeight: 0,
-                objectFit: 'cover',
-                borderRadius: 1,
-                cursor: 'pointer',
-                opacity: 0.8,
-                transition: 'opacity 0.2s',
-                '&:hover': { opacity: 1 },
-              }}
-            />
-          ))}
-        </Box>
+        {thumbnailIndices.map((i) => (
+          <Box
+            key={i}
+            component="img"
+            src={photos[i].src}
+            alt={photos[i].alt}
+            onClick={() => setCurrentIndex(i)}
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: 1,
+              cursor: 'pointer',
+              opacity: 0.8,
+              transition: 'opacity 0.2s',
+              '&:hover': { opacity: 1 },
+            }}
+          />
+        ))}
       </Box>
     </Box>
   )
