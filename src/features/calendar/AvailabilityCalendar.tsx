@@ -13,7 +13,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import SectionTitle from '@/components/UI/SectionTitle'
 import { useCalendarEvents } from './useCalendarEvents'
 import { property } from '@/features/property/property.data'
-
+const base = import.meta.env.BASE_URL
 function BookedDay(props: PickersDayProps<Dayjs> & { bookedDates: Set<string> }) {
   const { bookedDates, day, ...other } = props
   const dateStr = day.format('YYYY-MM-DD')
@@ -39,7 +39,7 @@ function BookedDay(props: PickersDayProps<Dayjs> & { bookedDates: Set<string> })
 }
 
 export default function AvailabilityCalendar() {
-  const { bookedDates, loading, error } = useCalendarEvents(property.icsUrl)
+  const { bookedDates, loading, error } = useCalendarEvents(`${base}/${property.icsUrl}`)
   const [startMonth, setStartMonth] = useState(dayjs().startOf('month'))
 
   const goBack = () => setStartMonth((m) => m.subtract(1, 'month'))
