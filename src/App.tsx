@@ -1,13 +1,18 @@
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import Header from '@/components/Layout/Header'
+import Footer from '@/components/Layout/Footer'
+import HomePage from '@/pages/HomePage'
+import theme from '@/theme/theme'
 
 function App() {
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h3" component="h1">
-        LocalBnB
-      </Typography>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header />
+      <HomePage />
+      <Footer />
+    </ThemeProvider>
   )
 }
 
