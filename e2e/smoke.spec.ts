@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test'
+import { property } from '../src/features/property/property.data'
+import { photos } from '../src/features/imageGallery/gallery.data'
 
 test('homepage loads with all sections', async ({ page }) => {
   await page.goto('/')
 
   // Header
-  await expect(page.getByText('Maple Ridge Retreat').first()).toBeVisible()
+  await expect(page.getByText(property.name).first()).toBeVisible()
 
   // Photos section
   await expect(page.getByRole('heading', { name: 'Photos' })).toBeVisible()
@@ -14,7 +16,7 @@ test('homepage loads with all sections', async ({ page }) => {
   // About section
   await expect(page.getByRole('heading', { name: 'About' })).toBeVisible()
   await expect(page.getByText('Amenities')).toBeVisible()
-  await expect(page.getByText('WiFi')).toBeVisible()
+  await expect(page.getByText(property.amenities[0])).toBeVisible()
 
   // Location section
   await expect(page.getByRole('heading', { name: 'Location' })).toBeVisible()
@@ -24,7 +26,7 @@ test('homepage loads with all sections', async ({ page }) => {
 
   // Contact section
   await expect(page.getByRole('heading', { name: 'Contact' })).toBeVisible()
-  await expect(page.getByText('(705) 555-0192')).toBeVisible()
+  await expect(page.getByText(property.contact.phone)).toBeVisible()
 })
 
 test('image gallery navigation works', async ({ page }) => {
@@ -33,19 +35,16 @@ test('image gallery navigation works', async ({ page }) => {
   const nextBtn = page.getByLabel('Next photo')
   await nextBtn.click()
 
-  // After clicking next, the second photo alt text should be visible
+  // After clicking next, the second photo should be the main image
   await expect(
-    page.getByAltText('Open-concept living room with fireplace').first()
+    page.getByAltText(photos[1].alt).first()
   ).toBeVisible()
 })
 
 test('calendar shows current month', async ({ page }) => {
   await page.goto('/')
 
-  // Wait for calendar to load (spinner should disappear)
-  await expect(page.getByRole('progressbar')).toBeHidden({ timeout: 10000 })
-
-  // Should have calendar grids rendered
+  // Wait for calendar grids to appear
   const grids = page.getByRole('grid')
-  await expect(grids.first()).toBeVisible()
+  await expect(grids.first()).toBeVisible({ timeout: 10000 })
 })

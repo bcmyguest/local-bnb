@@ -1,3 +1,4 @@
+import { property } from '@/features/property/property.data'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
@@ -14,7 +15,7 @@ export default function Footer() {
       }}
     >
       <Typography variant="body2" color="text.secondary">
-        &copy; {new Date().getFullYear()} Maple Ridge Retreat. All rights
+        &copy; {new Date().getFullYear()} {property.name}. All rights
         reserved.
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>

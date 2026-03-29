@@ -23,7 +23,7 @@ export function useGeocode(address: {
       try {
         const queries = [
           `${address.street}, ${address.city}, ${address.province} ${address.postal}`,
-          `${address.street}, ${address.city}, ${address.province} ${address.postal}`,
+          `${address.city}, ${address.province} ${address.postal}`,
         ]
 
         let data: { lon: string; lat: string }[] = []
