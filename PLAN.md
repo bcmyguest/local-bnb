@@ -116,19 +116,21 @@ Create `src/theme/theme.ts` with brand-appropriate palette (warm/neutral colors 
 - `ol` — OpenLayers for the map
 
 ### Implementation Order
-1. Theme + App shell (Layout, Header, Footer)
-2. HomePage scaffold (empty section placeholders)
-3. ImageGallery (main image + thumbnails + nav buttons)
-4. PropertyDetails (amenities list)
-5. AvailabilityCalendar (fetch + parse ICS, highlight booked days)
-6. LocationMap (OpenLayers + OSM)
-7. ContactSection
-8. Tests for each feature
+1. ~~Theme + App shell (Layout, Header, Footer)~~ **DONE**
+2. ~~HomePage scaffold (empty section placeholders)~~ **DONE**
+3. ~~ImageGallery (main image + thumbnails + nav buttons)~~ **DONE**
+4. ~~PropertyDetails (amenities list)~~ **DONE**
+5. ~~AvailabilityCalendar (fetch + parse ICS, highlight booked days)~~ **DONE**
+6. ~~LocationMap (OpenLayers + OSM)~~ **DONE**
+7. ~~ContactSection~~ **DONE**
+8. ~~Tests for each feature~~ **DONE** (22 unit tests + 3 E2E tests)
 
 ---
 
 ### Verification
-- `pnpm dev` → full page visible and scrollable
-- `pnpm test` → all component tests pass
-- `pnpm e2e` → Playwright confirms page structure
-- `pnpm build` → no TS errors, dist/ produced
+- `pnpm dev` → full page visible and scrollable **VERIFIED**
+- `pnpm test` → all component tests pass **VERIFIED** (22 tests passing)
+- `pnpm e2e` → Playwright confirms page structure **VERIFIED** (3 tests passing)
+- `pnpm build` → no TS errors, dist/ produced **VERIFIED**
+- `pnpm typecheck` → passes **VERIFIED**
+- `pnpm lint` → passes **VERIFIED**
