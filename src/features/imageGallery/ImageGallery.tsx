@@ -72,7 +72,7 @@ export default function ImageGallery() {
         <Box
           sx={{
             flex: 1,
-            display: 'flex',
+            display: { xs: 'none', md: 'flex' },
             flexDirection: 'column',
             gap: 2,
           }}
