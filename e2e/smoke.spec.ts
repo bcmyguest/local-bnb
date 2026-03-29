@@ -41,6 +41,42 @@ test('image gallery navigation works', async ({ page }) => {
   ).toBeVisible()
 })
 
+test('gallery thumbnails update on navigation', async ({ page }) => {
+  await page.goto('/')
+  await page.setViewportSize({ width: 1280, height: 720 })
+
+  // Initially viewing photo 0; thumbnails should be photos 1, 2, 3
+  for (let i = 1; i <= 3; i++) {
+    await expect(page.getByAltText(photos[i].alt)).toBeVisible()
+  }
+
+  // Click Previous to wrap to last photo (index 5)
+  await page.getByLabel('Previous photo').click()
+
+  // Thumbnails should now be indices 0, 1, 2
+  for (const idx of [0, 1, 2]) {
+    await expect(page.getByAltText(photos[idx].alt)).toBeVisible()
+  }
+})
+
+test('clicking thumbnail changes main image and updates sidebar', async ({ page }) => {
+  await page.goto('/')
+  await page.setViewportSize({ width: 1280, height: 720 })
+
+  // Click on photo 3 thumbnail (visible when viewing index 0)
+  await page.getByAltText(photos[3].alt).click()
+
+  // Thumbnails should now be (3+1)%6=4, (3+2)%6=5, (3+3)%6=0
+  const expectedIndices = [
+    (3 + 1) % photos.length,
+    (3 + 2) % photos.length,
+    (3 + 3) % photos.length,
+  ]
+  for (const idx of expectedIndices) {
+    await expect(page.getByAltText(photos[idx].alt)).toBeVisible()
+  }
+})
+
 test('calendar shows current month', async ({ page }) => {
   await page.goto('/')
 

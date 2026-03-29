@@ -24,7 +24,7 @@ const amenityIcons: Record<string, React.ReactElement> = {
   'Washer & Dryer': <LocalLaundryServiceIcon />,
   'Pet Friendly': <PetsIcon />,
   'BBQ Grill': <OutdoorGrillIcon />,
-  'Lake Access': <KayakingIcon />,
+  'Water Access': <KayakingIcon />,
   'Board Games': <CasinoIcon />,
 }
 

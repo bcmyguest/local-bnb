@@ -17,16 +17,17 @@ export default function ImageGallery() {
     setCurrentIndex((prev) => (prev === photos.length - 1 ? 0 : prev + 1))
   }
 
-  const thumbnailIndices = photos
-    .map((_, i) => i)
-    .filter((i) => i !== currentIndex)
-    .slice(0, 3)
+  const thumbnailCount = Math.min(3, photos.length - 1)
+  const thumbnailIndices = Array.from(
+    { length: thumbnailCount },
+    (_, i) => (currentIndex + 1 + i) % photos.length
+  )
 
   return (
     <Box>
       <SectionTitle id="photos">Photos</SectionTitle>
-      <Box sx={{ display: 'flex', mt:0, gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-        <Box sx={{ position: 'relative', flex: 2, minHeight: 400 }}>
+      <Box sx={{ display: 'flex', mt:0, gap: 2, height: { xs: 400, md: 500 }, flexDirection: { xs: 'column', md: 'row' } }}>
+        <Box sx={{ position: 'relative', flex: 2, overflow: 'hidden', borderRadius: 2 }}>
           <Box
             component="img"
             src={photos[currentIndex].src}
@@ -34,9 +35,7 @@ export default function ImageGallery() {
             sx={{
               width: '100%',
               height: '100%',
-              minHeight: 400,
               objectFit: 'cover',
-              borderRadius: 2,
               display: 'block',
             }}
           />
@@ -86,8 +85,8 @@ export default function ImageGallery() {
               onClick={() => setCurrentIndex(i)}
               sx={{
                 width: '100%',
-                height: 0,
-                paddingBottom: '56%',
+                flex: 1,
+                minHeight: 0,
                 objectFit: 'cover',
                 borderRadius: 1,
                 cursor: 'pointer',
