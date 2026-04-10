@@ -15,7 +15,7 @@ export const property = {
     'Board Games',
   ],
   address: {
-    street: '1321 Hilly Lane',
+    street: '1234 Hilly Lane',
     city: 'North Grenville',
     province: 'Ontario',
     postal: 'K0G 1J0',
@@ -24,5 +24,6 @@ export const property = {
     phone: '(613) 371-5872',
     email: 'netbuy@gmail.com',
   },
-  icsUrl: '/calendar.ics',
+  icsUrl: '/data/airbnb-calendar.ics',
+  privateIcsUrl: '/data/private-calendar.ics',
 }

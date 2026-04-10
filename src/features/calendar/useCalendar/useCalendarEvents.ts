@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import ICAL from 'ical.js'
+import { CalendarEvent } from '@/types/calendar'
 
 export function useCalendarEvents(icsUrl: string) {
-  const [bookedDates, setBookedDates] = useState<Set<string>>(new Set())
+  const [events, setEvents] = useState<CalendarEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -17,26 +18,21 @@ export function useCalendarEvents(icsUrl: string) {
 
         const jcalData = ICAL.parse(text)
         const comp = new ICAL.Component(jcalData)
-        const events = comp.getAllSubcomponents('vevent')
+        const vevents = comp.getAllSubcomponents('vevent')
 
-        const dates = new Set<string>()
-        for (const event of events) {
+        const parsedEvents: CalendarEvent[] = vevents.map(event => {
           const icalEvent = new ICAL.Event(event)
-          const start = icalEvent.startDate.toJSDate()
-          const end = icalEvent.endDate.toJSDate()
-
-          const current = new Date(start)
-          while (current < end) {
-            const yyyy = current.getFullYear()
-            const mm = String(current.getMonth() + 1).padStart(2, '0')
-            const dd = String(current.getDate()).padStart(2, '0')
-            dates.add(`${yyyy}-${mm}-${dd}`)
-            current.setDate(current.getDate() + 1)
+          return {
+            start: icalEvent.startDate.toJSDate(),
+            end: icalEvent.endDate.toJSDate(),
+            source: 'airbnb' as const,
+            status: 'booked' as const,
+            label: icalEvent.summary || 'Airbnb Booking'
           }
-        }
+        })
 
         if (!cancelled) {
-          setBookedDates(dates)
+          setEvents(parsedEvents)
           setLoading(false)
         }
       } catch (err) {
@@ -51,5 +47,5 @@ export function useCalendarEvents(icsUrl: string) {
     return () => { cancelled = true }
   }, [icsUrl])
 
-  return { bookedDates, loading, error }
+  return { events, loading, error }
 }

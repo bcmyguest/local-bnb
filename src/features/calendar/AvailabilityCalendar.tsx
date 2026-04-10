@@ -11,27 +11,34 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import dayjs, { Dayjs } from 'dayjs'
 import SectionTitle from '@/components/UI/SectionTitle'
-import { useCalendarEvents } from './useCalendarEvents'
+import { useUnifiedCalendar } from './useUnifiedCalendar'
 import { property } from '@/features/property/property.data'
-const base = import.meta.env.BASE_URL
-function BookedDay(props: PickersDayProps<Dayjs> & { bookedDates: Set<string> }) {
-  const { bookedDates, day, ...other } = props
+
+interface BookedDayProps extends PickersDayProps<Dayjs> {
+  airbnbDates: Set<string>
+  privateDates: Set<string>
+}
+
+const BookedDay = (props: BookedDayProps) => {
+  const { airbnbDates, privateDates, day, ...other } = props
   const dateStr = day.format('YYYY-MM-DD')
-  const isBooked = bookedDates.has(dateStr)
+  const isAirbnb = airbnbDates.has(dateStr)
+  const isPrivate = privateDates.has(dateStr)
 
   return (
     <PickersDay
       {...other}
       day={day}
-      disabled={isBooked}
+      disabled={isAirbnb || isPrivate}
       sx={{
-        ...(isBooked && {
+        ...(isAirbnb && {
           bgcolor: '#f0c0c0',
           color: '#8b0000',
           textDecoration: 'line-through',
-          '&.Mui-disabled': {
-            color: '#8b0000',
-          },
+        }),
+        ...(isPrivate && {
+          bgcolor: '#c0d0f0',
+          color: '#00008b',
         }),
       }}
     />
@@ -39,19 +46,49 @@ function BookedDay(props: PickersDayProps<Dayjs> & { bookedDates: Set<string> })
 }
 
 export default function AvailabilityCalendar() {
-  const { bookedDates, loading, error } = useCalendarEvents(`${base}/${property.icsUrl}`)
+  const { events, loading, error } = useUnifiedCalendar(
+    property.icsUrl,
+    property.privateIcsUrl
+  )
   const [startMonth, setStartMonth] = useState(dayjs().startOf('month'))
 
-  const goBack = () => setStartMonth((m) => m.subtract(1, 'month'))
-  const goForward = () => setStartMonth((m) => m.add(1, 'month'))
+  const airbnbDates = new Set<string>()
+  const privateDates = new Set<string>()
+
+  events.forEach((event) => {
+    const start = dayjs(event.start)
+    const end = dayjs(event.end)
+    let current = start
+    while (current.isBefore(end)) {
+      const dStr = current.format('YYYY-MM-DD')
+      if (event.source === 'airbnb') {
+        airbnbDates.add(dStr)
+      } else {
+        privateDates.add(dStr)
+      }
+      current = current.add(1, 'day')
+    }
+  })
+
+  const goBack = () => setStartMonth((m: Dayjs) => m.subtract(1, 'month'))
+  const goForward = () => setStartMonth((m: Dayjs) => m.add(1, 'month'))
 
   return (
-    <Box sx={{mt: 1}}>
+    <Box sx={{ mt: 1 }}>
       <SectionTitle id="availability">Availability</SectionTitle>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-        Dates shown with a strikethrough are already booked. Contact us to
-        reserve your stay.
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+        Dates shown with a strikethrough are already booked. Contact us to reserve your stay.
       </Typography>
+      <Box sx={{ mb: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ width: 16, height: 16, bgcolor: '#f0c0c0', borderRadius: '50%' }} />
+          <Typography variant="caption">Airbnb</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ width: 16, height: 16, bgcolor: '#c0d0f0', borderRadius: '50%' }} />
+          <Typography variant="caption">Private</Typography>
+        </Box>
+      </Box>
 
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
@@ -87,7 +124,7 @@ export default function AvailabilityCalendar() {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                       readOnly
-                      value={month}
+                      value={null}
                       referenceDate={month}
                       slots={{
                         day: BookedDay,
@@ -95,15 +132,7 @@ export default function AvailabilityCalendar() {
                         rightArrowIcon: () => null,
                       }}
                       slotProps={{
-                        day: { bookedDates } as never,
-                        calendarHeader: {
-                          sx: {
-                            pointerEvents: 'none',
-                            '& .MuiPickersCalendarHeader-switchViewButton': {
-                              display: 'none',
-                            },
-                          },
-                        },
+                        day: { airbnbDates, privateDates },
                       }}
                     />
                   </LocalizationProvider>
