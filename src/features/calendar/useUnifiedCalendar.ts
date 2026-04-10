@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useCalendarEvent } from './useCalendarEvent'
 import { usePrivateEvents } from './usePrivateEvents'
-import { reconcileEvents } from '@/utils/reconcileEvents'
+import { reconcileEvents, ReconciledEvent } from '@/utils/reconcileEvents'
 
 export function useUnifiedCalendar(airbnbIcsUrl: string, privateIcsUrl?: string) {
   const { events: airbnbEvents, loading: airbnbLoading, error: airbnbError } = useCalendarEvent(airbnbIcsUrl)
@@ -10,7 +10,7 @@ export function useUnifiedCalendar(airbnbIcsUrl: string, privateIcsUrl?: string)
   const loading = airbnbLoading || privateLoading
   const error = airbnbError || privateError
 
-  const events = useMemo(() => {
+  const events: ReconciledEvent[] = useMemo(() => {
     if (loading) return []
     try {
       return reconcileEvents(airbnbEvents, privateEvents)
